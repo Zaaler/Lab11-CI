@@ -151,53 +151,26 @@ START_TEST(test_2d_area)
     coord_2d_t a;
     coord_2d_t b;
     coord_2d_t c;
-    coord_2d_t exp;
+    double exp_area;
+    double area;
+    int flag;
 
     a.x = b.x = 0;
 	c.x = 5;
     a.y = c.y = 0;
     b.y = 3;
-    coord_2d_midpoint(&mid, &a, &b);
-    exp.x = 0;
-    exp.y = 0;
-    ck_assert(coord_2d_eq(&mid, &exp));
-
-    a.x = 0;
-    a.y = 0;
-    b.x = 3;
-    b.y = 0;
-    coord_2d_midpoint(&mid, &a, &b);
-    exp.x = 1.5;
-    exp.y = 0;
-    ck_assert(coord_2d_eq(&mid, &exp));
-
-    a.x = 0;
-    a.y = 0;
-    b.x = 0;
-    b.y = 3;
-    coord_2d_midpoint(&mid, &a, &b);
-    exp.x = 0;
-    exp.y = 1.5;
-    ck_assert(coord_2d_eq(&mid, &exp));
-
-    a.x = 0;
-    a.y = 0;
-    b.x = 3;
-    b.y = 3;
-    coord_2d_midpoint(&mid, &a, &b);
-    exp.x = 1.5;
-    exp.y = 1.5;
-    ck_assert(coord_2d_eq(&mid, &exp));
-
-    a.x = 1;
-    a.y = 2;
-    b.x = 3;
-    b.y = 4;
-    coord_2d_midpoint(&mid, &a, &b);
-    exp.x = 2;
-    exp.y = 3;
-    ck_assert(coord_2d_eq(&mid, &exp));
-
+    area = coord_2d_area_triangle(&a, &b, &c);
+    exp_area = 7.5;
+    //printf("THE AREA IS: %f", area);
+    if (area == exp_area) {
+		//printf("HEREEEEEE");
+		flag = true;
+	}
+	else{
+		//printf("HEREEEEEE FLASE");
+		flag = false;
+	}
+    ck_assert(flag);
 }
 END_TEST
 
@@ -218,11 +191,15 @@ Suite* coord_2d_suite(void)
 
     TCase* tc_2d_midpoint = tcase_create("coord_2d_midpoint");
     tcase_add_test(tc_2d_midpoint, test_2d_midpoint);
+    
+    TCase* tc_2d_area = tcase_create("coord_2d_area_triangle");
+    tcase_add_test(tc_2d_area, test_2d_area);
 
     /* Add Cases to Suite */
     suite_add_tcase(s, tc_2d_eq);
     suite_add_tcase(s, tc_2d_dist);
     suite_add_tcase(s, tc_2d_midpoint);
+    suite_add_tcase(s, tc_2d_area);
 
     /* Return Suite */
     return s;
